@@ -302,26 +302,31 @@
     .btn-skip:hover { color: var(--text-secondary); }
 
     /* OS picker (special first card) */
+    .os-options-row {
+      display: flex;
+      gap: 12px;
+    }
     .os-option {
+      flex: 1;
       display: flex;
       align-items: center;
-      gap: 16px;
-      padding: 18px 20px;
+      justify-content: center;
+      gap: 10px;
+      padding: 16px;
       border: 2px solid var(--border-light);
       border-radius: var(--radius-lg);
-      margin-bottom: 12px;
       cursor: pointer;
       transition: all 0.15s;
     }
     .os-option:hover { border-color: var(--accent); background: var(--accent-light); }
     .os-option.selected { border-color: var(--accent); background: var(--accent-light); }
     .os-icon {
-      font-size: 32px;
+      font-size: 26px;
       flex-shrink: 0;
     }
     .os-label {
       font-weight: 600;
-      font-size: 16px;
+      font-size: 15px;
     }
     .os-desc {
       font-size: 13px;
@@ -1010,18 +1015,14 @@
           <div class="card-body">
             <p>This tool captures screenshots of OTA booking flows automatically. It runs on your own computer. The setup takes about 5 minutes.</p>
             <p style="font-weight: 600; color: var(--text); margin-top: 16px; margin-bottom: 12px;">What computer are you using?</p>
-            <div class="os-option" onclick="pickOS('mac')">
-              <div class="os-icon">&#128187;</div>
-              <div>
+            <div class="os-options-row">
+              <div class="os-option" onclick="pickOS('mac')">
+                <div class="os-icon">&#128187;</div>
                 <div class="os-label">Mac</div>
-                <div class="os-desc">MacBook, iMac, Mac Mini, etc.</div>
               </div>
-            </div>
-            <div class="os-option" onclick="pickOS('win')">
-              <div class="os-icon">&#128421;</div>
-              <div>
+              <div class="os-option" onclick="pickOS('win')">
+                <div class="os-icon">&#128421;</div>
                 <div class="os-label">Windows</div>
-                <div class="os-desc">Any Windows PC or laptop</div>
               </div>
             </div>
           </div>
