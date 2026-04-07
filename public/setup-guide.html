@@ -80,8 +80,9 @@
       border-radius: var(--radius-xl);
       width: 100%;
       max-width: 520px;
+      max-height: calc(100vh - 120px);
+      overflow-y: auto;
       box-shadow: 0 4px 24px rgba(0,0,0,0.06);
-      overflow: hidden;
       animation: cardIn 0.35s ease;
     }
     @keyframes cardIn {
@@ -798,7 +799,7 @@
       if (currentStep > 0) {
         footerHtml += `<button class="btn-back" onclick="goBack()">Back</button>`;
       } else {
-        footerHtml += `<button class="btn-back" onclick="resetOS()">Change</button>`;
+        footerHtml += `<button class="btn-back" onclick="resetOS()">&larr; I use a different OS</button>`;
       }
       if (step.skipLabel) {
         footerHtml += `<button class="btn-skip" onclick="skipTo(${step.skipTo})">${step.skipLabel}</button>`;
