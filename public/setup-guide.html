@@ -382,30 +382,38 @@
     }
     .btn-open:hover { background: #15713f; }
 
-    /* Help toggle on every step */
+    /* Container inner for card + help */
+    .container-inner {
+      width: 100%;
+      max-width: 520px;
+    }
+
+    /* Help area outside card */
+    .help-area {
+      margin-top: 14px;
+    }
     .help-toggle {
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 6px;
-      margin-top: 20px;
       padding: 10px 0;
       font-size: 13px;
       font-weight: 500;
       color: var(--text-muted);
       cursor: pointer;
-      border-top: 1px solid var(--border-light);
       transition: color 0.15s;
     }
     .help-toggle:hover { color: var(--text-secondary); }
     .help-toggle .faq-arrow { transition: transform 0.2s; }
+    .help-toggle.active .faq-arrow { transform: rotate(180deg); }
     .step-faq {
       display: none;
+      margin-top: 8px;
     }
     .step-faq.open {
       display: block;
     }
-    .step-faq.open + .card-footer { /* spacing fix */ }
 
     /* FAQ / Troubleshooting */
     .faq-section {
@@ -469,8 +477,17 @@
   </div>
 
   <div class="container">
-    <div class="card">
-      <div id="card-content"></div>
+    <div class="container-inner">
+      <div class="card">
+        <div id="card-content"></div>
+      </div>
+      <div class="help-area" id="help-area" style="display:none;">
+        <div class="help-toggle" onclick="document.getElementById('help-faq').classList.toggle('open'); this.classList.toggle('active')">
+          <span>Stuck? Need help?</span>
+          <span class="faq-arrow">&#9660;</span>
+        </div>
+        <div id="help-faq" class="step-faq"></div>
+      </div>
     </div>
   </div>
 
@@ -679,16 +696,8 @@
         a: 'Node.js is not installed yet, or your terminal needs to be restarted. Close the terminal window, open a new one, and try <code>node -v</code> again. If it still doesn\'t work, go back and re-install Node.js from nodejs.org.'
       },
       {
-        q: 'A Chrome window opened but nothing is happening',
-        a: 'The audit is probably still running. It takes 1-2 minutes. <strong>Do not close the Chrome window.</strong> Just wait. When it\'s done, the screenshots will appear on the dashboard.'
-      },
-      {
         q: '"address already in use" error when starting',
         a: 'The tool is already running somewhere. <strong>Mac:</strong> Press Ctrl+C in Terminal first. <strong>Windows:</strong> Close the old black command window. Then try starting again.'
-      },
-      {
-        q: 'Screenshots look wrong or the page is in the wrong language',
-        a: 'Try logging in first. On the dashboard, open <strong>Session Setup</strong>, select your OTA, and click <strong>"Open Browser"</strong>. Log in with your account, close the browser, then run the audit again.'
       },
       {
         q: 'Windows SmartScreen is blocking the file',
@@ -824,7 +833,7 @@
       if (currentStep > 0) {
         footerHtml += `<button class="btn-back" onclick="goBack()">Back</button>`;
       } else {
-        footerHtml += `<button class="btn-back" onclick="resetOS()">&larr; I use a different OS</button>`;
+        footerHtml += `<button class="btn-back" onclick="resetOS()">Back</button>`;
       }
       if (step.skipLabel) {
         footerHtml += `<button class="btn-skip" onclick="skipTo(${step.skipTo})">${step.skipLabel}</button>`;
@@ -840,16 +849,21 @@
           <div class="phase-label">${step.phase}</div>
           <div class="step-title">${step.title}</div>
         </div>
-        <div class="card-body">
-          ${step.body}
-          <div class="help-toggle" onclick="document.getElementById('step-faq').classList.toggle('open')">
-            <span>Stuck? Need help?</span>
-            <span class="faq-arrow">&#9660;</span>
-          </div>
-          <div id="step-faq" class="step-faq">${renderFaq()}</div>
-        </div>
+        <div class="card-body">${step.body}</div>
         <div class="card-footer">${footerHtml}</div>
       `;
+
+      // Show help area on step cards, hide on OS picker and final
+      const helpArea = document.getElementById('help-area');
+      const helpFaq = document.getElementById('help-faq');
+      if (os !== null && currentStep < steps.length) {
+        helpArea.style.display = '';
+        helpFaq.innerHTML = renderFaq();
+        helpFaq.classList.remove('open');
+        document.querySelector('.help-toggle').classList.remove('active');
+      } else {
+        helpArea.style.display = 'none';
+      }
 
       // Re-trigger animation
       const card = document.querySelector('.card');

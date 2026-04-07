@@ -1149,6 +1149,57 @@ main {
   font-size: 12.5px;
 }
 
+/* Help FAQ on dashboard */
+.help-faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.help-faq-item {
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.help-faq-item summary {
+  padding: 10px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: background 0.15s;
+}
+
+.help-faq-item summary:hover {
+  background: var(--bg-section);
+}
+
+.help-faq-item summary::after {
+  content: '\25BC';
+  font-size: 10px;
+  color: var(--text-muted);
+  transition: transform 0.2s;
+}
+
+.help-faq-item[open] summary::after {
+  transform: rotate(180deg);
+}
+
+.help-faq-item summary::-webkit-details-marker {
+  display: none;
+}
+
+.help-faq-item p {
+  padding: 0 14px 12px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
 .feedback-counts {
   display: flex;
   gap: 8px;

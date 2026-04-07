@@ -31,14 +31,18 @@ const sessionBadge = document.getElementById('session-badge');
 // Floating panels + FABs
 const fabGuide = document.getElementById('fab-guide');
 const fabFeedback = document.getElementById('fab-feedback');
+const fabHelp = document.getElementById('fab-help');
 const floatGuide = document.getElementById('float-guide');
 const floatFeedback = document.getElementById('float-feedback');
+const floatHelp = document.getElementById('float-help');
 
 function closeAllPanels() {
   floatGuide.classList.remove('open');
   floatFeedback.classList.remove('open');
+  floatHelp.classList.remove('open');
   fabGuide.classList.remove('active');
   fabFeedback.classList.remove('active');
+  fabHelp.classList.remove('active');
 }
 
 fabGuide.addEventListener('click', () => {
@@ -59,8 +63,18 @@ fabFeedback.addEventListener('click', () => {
   }
 });
 
+fabHelp.addEventListener('click', () => {
+  const wasOpen = floatHelp.classList.contains('open');
+  closeAllPanels();
+  if (!wasOpen) {
+    floatHelp.classList.add('open');
+    fabHelp.classList.add('active');
+  }
+});
+
 document.getElementById('float-guide-close').addEventListener('click', closeAllPanels);
 document.getElementById('float-feedback-close').addEventListener('click', closeAllPanels);
+document.getElementById('float-help-close').addEventListener('click', closeAllPanels);
 
 const isLocalhost = ['localhost', '127.0.0.1'].includes(location.hostname);
 

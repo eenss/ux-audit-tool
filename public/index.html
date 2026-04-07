@@ -278,6 +278,10 @@
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
       <span>Feedback</span>
     </button>
+    <button type="button" class="fab fab--help" id="fab-help" title="Need help?">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <span>Need help?</span>
+    </button>
   </div>
 
   <!-- Guide floating panel -->
@@ -331,6 +335,40 @@
     </div>
   </div>
 
+
+  <!-- Help floating panel -->
+  <div class="float-panel float-panel--help" id="float-help">
+    <div class="float-panel-header">
+      <h3>Need help?</h3>
+      <button type="button" class="float-panel-close" id="float-help-close">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="float-panel-body">
+      <div class="help-faq-list">
+        <details class="help-faq-item">
+          <summary>A Chrome window opened but nothing is happening</summary>
+          <p>The audit is probably still running. It takes 1-2 minutes. <strong>Do not close the Chrome window.</strong> Just wait. When it's done, the screenshots will appear on the dashboard.</p>
+        </details>
+        <details class="help-faq-item">
+          <summary>Screenshots look wrong or the page is in the wrong language</summary>
+          <p>Try logging in first. Open <strong>Session Setup</strong>, select your OTA, and click <strong>"Open Browser"</strong>. Log in with your account, close the browser, then run the audit again.</p>
+        </details>
+        <details class="help-faq-item">
+          <summary>The audit seems stuck or failed</summary>
+          <p>Check the <strong>Log</strong> section at the bottom of the page for error messages. Try stopping the tool (Ctrl+C in Terminal) and restarting it, then run the audit again.</p>
+        </details>
+        <details class="help-faq-item">
+          <summary>How do I change the language or currency?</summary>
+          <p>In the <strong>Locale</strong> section, pick a language. The currency updates automatically to match. If you need a different currency, you can change it manually.</p>
+        </details>
+        <details class="help-faq-item">
+          <summary>Something else is wrong</summary>
+          <p>Click the <strong>Feedback</strong> button to describe what happened. Include what you see on your screen.</p>
+        </details>
+      </div>
+    </div>
+  </div>
 
   <script src="app.js"></script>
 </body>
