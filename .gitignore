@@ -1,0 +1,8 @@
+node_modules/
+profiles/
+screenshots/
+audit.log
+feedback.json
+auth/
+.DS_Store
+.claude/

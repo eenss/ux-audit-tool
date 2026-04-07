@@ -1,0 +1,16 @@
+{
+  "name": "ux-audit-tool",
+  "version": "1.0.0",
+  "description": "Automated UX audit tool for OTA booking flows",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "login": "node login.js",
+    "set-locale": "node set-locale.js"
+  },
+  "dependencies": {
+    "archiver": "^7.0.1",
+    "express": "^5.1.0",
+    "playwright": "^1.52.0"
+  }
+}

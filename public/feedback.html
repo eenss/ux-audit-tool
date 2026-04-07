@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Feedback - UX Audit Tool</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Fraunces:opsz,wght@9..144,400;9..144,500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --font-body: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-display: 'Fraunces', Georgia, serif;
+      --bg: #f4f2ef;
+      --bg-card: #ffffff;
+      --border: #e4e0db;
+      --border-light: #ebe8e4;
+      --text: #1a1816;
+      --text-secondary: #7a7267;
+      --text-muted: #a39e96;
+      --accent: #3366e6;
+      --accent-hover: #2952c4;
+      --green: #1a8754;
+      --green-light: #e8f5ee;
+      --red: #d63031;
+      --red-light: #fde8e8;
+      --amber: #c47f17;
+      --amber-light: #fef7e6;
+      --radius: 10px;
+      --radius-lg: 14px;
+      --shadow: 0 1px 3px rgba(0,0,0,0.06);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    .header {
+      background: var(--bg-card);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .header h1 {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 500;
+    }
+    .header a {
+      color: var(--accent);
+      font-size: 13px;
+      text-decoration: none;
+    }
+    .header a:hover { text-decoration: underline; }
+
+    .login-screen {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: calc(100vh - 60px);
+    }
+    .login-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      width: 340px;
+      box-shadow: var(--shadow);
+      text-align: center;
+    }
+    .login-card h2 {
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 500;
+      margin-bottom: 6px;
+    }
+    .login-card p {
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-bottom: 20px;
+    }
+    .login-card input {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: var(--font-body);
+      outline: none;
+      margin-bottom: 12px;
+    }
+    .login-card input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(51, 102, 230, 0.1);
+    }
+    .login-error {
+      color: var(--red);
+      font-size: 13px;
+      margin-bottom: 10px;
+      display: none;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      font-family: var(--font-body);
+      cursor: pointer;
+      background: var(--accent);
+      color: #fff;
+      width: 100%;
+    }
+    .btn:hover { background: var(--accent-hover); }
+
+    main {
+      max-width: 720px;
+      margin: 24px auto;
+      padding: 0 16px;
+      display: none;
+    }
+
+    .stats {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .stat-badge {
+      font-size: 13px;
+      font-weight: 500;
+      padding: 5px 12px;
+      border-radius: 20px;
+    }
+    .stat-badge--open { background: var(--amber-light); color: var(--amber); }
+    .stat-badge--resolved { background: var(--green-light); color: var(--green); }
+    .stat-badge--total { background: #f0f0ee; color: var(--text-secondary); }
+
+    .fb-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius);
+      padding: 16px;
+      margin-bottom: 10px;
+      box-shadow: var(--shadow);
+      transition: opacity 0.15s;
+    }
+    .fb-item--resolved { opacity: 0.55; }
+    .fb-item--resolved:hover { opacity: 0.85; }
+
+    .fb-top {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    .fb-type-icon {
+      font-size: 16px;
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      background: #f5f3f0;
+      flex-shrink: 0;
+    }
+    .fb-author {
+      font-weight: 500;
+      font-size: 13px;
+    }
+    .fb-type-label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding: 2px 7px;
+      border-radius: 4px;
+    }
+    .fb-type-label--bug { background: var(--red-light); color: var(--red); }
+    .fb-type-label--locale { background: #e8eeff; color: var(--accent); }
+    .fb-type-label--suggestion { background: var(--amber-light); color: var(--amber); }
+    .fb-type-label--question { background: #f0f0ee; color: var(--text-secondary); }
+    .fb-time {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-left: auto;
+    }
+    .fb-message {
+      font-size: 14px;
+      line-height: 1.55;
+      margin-bottom: 6px;
+    }
+    .fb-context {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+    .fb-actions {
+      display: flex;
+      gap: 8px;
+    }
+    .fb-btn {
+      font-size: 12px;
+      font-weight: 500;
+      font-family: var(--font-body);
+      padding: 5px 12px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      cursor: pointer;
+      color: var(--text-secondary);
+      transition: all 0.15s;
+    }
+    .fb-btn:hover { background: #f5f3f0; }
+    .fb-btn--resolve:hover { color: var(--green); border-color: var(--green); }
+    .fb-btn--delete:hover { color: var(--red); border-color: var(--red); }
+
+    .empty {
+      text-align: center;
+      color: var(--text-muted);
+      padding: 40px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>Feedback</h1>
+    <a href="/">&larr; Back to dashboard</a>
+  </div>
+
+  <div class="login-screen" id="login-screen">
+    <div class="login-card">
+      <h2>Admin access</h2>
+      <p>Enter the password to view feedback.</p>
+      <form id="login-form">
+        <input type="password" id="pw-input" placeholder="Password" autofocus>
+        <div class="login-error" id="login-error">Wrong password. Try again.</div>
+        <button type="submit" class="btn">View feedback</button>
+      </form>
+    </div>
+  </div>
+
+  <main id="main">
+    <div class="stats" id="stats"></div>
+    <div id="list"></div>
+  </main>
+
+  <script>
+    const TYPE_ICONS = { bug: '\u{1F41B}', locale: '\u{1F310}', suggestion: '\u{1F4A1}', question: '\u{2753}' };
+    let adminPw = '';
+
+    function api(url, opts = {}) {
+      opts.headers = { ...opts.headers, 'X-Admin-PW': adminPw };
+      return fetch(url, opts);
+    }
+
+    function timeAgo(d) {
+      const m = Math.floor((Date.now() - new Date(d).getTime()) / 60000);
+      if (m < 1) return 'just now';
+      if (m < 60) return m + 'm ago';
+      const h = Math.floor(m / 60);
+      if (h < 24) return h + 'h ago';
+      return Math.floor(h / 24) + 'd ago';
+    }
+
+    function esc(s) {
+      const d = document.createElement('div');
+      d.textContent = s;
+      return d.innerHTML;
+    }
+
+    function render(item) {
+      const ctx = item.auditContext
+        ? `<div class="fb-context">${item.auditContext.ota} / ${item.auditContext.flow} / ${item.auditContext.language} / ${item.auditContext.currency}</div>`
+        : '';
+      const cls = item.resolved ? ' fb-item--resolved' : '';
+      const resolveLabel = item.resolved ? 'Reopen' : 'Resolve';
+      return `
+        <div class="fb-item${cls}" data-id="${item.id}">
+          <div class="fb-top">
+            <div class="fb-type-icon">${TYPE_ICONS[item.type] || '\u{1F4AC}'}</div>
+            <span class="fb-author">${esc(item.name)}</span>
+            <span class="fb-type-label fb-type-label--${item.type}">${item.type}</span>
+            <span class="fb-time">${timeAgo(item.createdAt)}</span>
+          </div>
+          <div class="fb-message">${esc(item.message)}</div>
+          ${ctx}
+          <div class="fb-actions">
+            <button class="fb-btn fb-btn--resolve" onclick="toggleResolve('${item.id}', ${!item.resolved})">${resolveLabel}</button>
+            <button class="fb-btn fb-btn--delete" onclick="deleteFb('${item.id}')">Delete</button>
+          </div>
+        </div>`;
+    }
+
+    async function load() {
+      const res = await api('/api/feedback');
+      if (!res.ok) return;
+      const items = await res.json();
+      const open = items.filter(i => !i.resolved).length;
+      const resolved = items.filter(i => i.resolved).length;
+
+      document.getElementById('stats').innerHTML =
+        `<span class="stat-badge stat-badge--total">${items.length} total</span>` +
+        (open ? `<span class="stat-badge stat-badge--open">${open} open</span>` : '') +
+        (resolved ? `<span class="stat-badge stat-badge--resolved">${resolved} resolved</span>` : '');
+
+      document.getElementById('list').innerHTML = items.length
+        ? items.map(render).join('')
+        : '<div class="empty">No feedback yet.</div>';
+    }
+
+    async function toggleResolve(id, resolved) {
+      await api('/api/feedback/' + id, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ resolved }),
+      });
+      load();
+    }
+
+    async function deleteFb(id) {
+      if (!confirm('Delete this feedback?')) return;
+      await api('/api/feedback/' + id, { method: 'DELETE' });
+      load();
+    }
+
+    document.getElementById('login-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      adminPw = document.getElementById('pw-input').value;
+      const res = await api('/api/feedback');
+      if (res.ok) {
+        document.getElementById('login-screen').style.display = 'none';
+        document.getElementById('main').style.display = 'block';
+        load();
+      } else {
+        document.getElementById('login-error').style.display = 'block';
+        document.getElementById('pw-input').value = '';
+        document.getElementById('pw-input').focus();
+      }
+    });
+  </script>
+</body>
+</html>

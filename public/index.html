@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UX Audit Screenshot Tool</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="header-inner">
+      <div class="header-title">
+        <h1>UX Audit Screenshot Tool</h1>
+        <p class="subtitle">Automated booking flow screenshots for OTA comparison</p>
+      </div>
+      <a href="https://eenss.github.io/ux-audit-setup-guide/" class="header-link" target="_blank">Setup Guide</a>
+    </div>
+  </header>
+
+  <!-- Global notice (always visible) -->
+  <div class="global-notice">
+    <div class="global-notice-inner">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      <span>This tool automates screenshot capture only. For a proper UX audit, go through the entire booking flow yourself.</span>
+    </div>
+  </div>
+
+  <!-- Guide drawer removed - moved to floating panel -->
+
+  <main>
+    <div class="workflow">
+
+      <!-- Step 1: Session Setup -->
+      <section class="card card--collapsible" id="session-panel">
+        <button type="button" class="card-header card-header--toggle" id="session-toggle">
+          <div class="step-indicator">
+            <span class="step-number">1</span>
+          </div>
+          <div class="card-header-text">
+            <h2>Session Setup</h2>
+            <p class="card-desc">Log in to the OTA before running audits</p>
+          </div>
+          <span class="session-badge" id="session-badge"></span>
+          <svg class="chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="card-body" id="session-body">
+          <div class="session-guide">
+            <div class="session-guide-badge">One-time setup</div>
+            <ol class="session-guide-steps">
+              <li>Click <strong>Open Login</strong> below</li>
+              <li>Log in to the OTA in the new browser window</li>
+              <li>Come back to this page and click <strong>Done - Close Browser</strong></li>
+            </ol>
+          </div>
+          <div class="form-row">
+            <label>
+              <span class="label-text">OTA</span>
+              <select id="session-ota">
+                <option value="agoda">Agoda</option>
+                <option value="bcom" disabled>Booking.com (coming soon)</option>
+                <option value="expedia" disabled>Expedia (coming soon)</option>
+                <option value="trip" disabled>Trip (coming soon)</option>
+              </select>
+            </label>
+          </div>
+          <div class="session-actions">
+            <button type="button" id="login-btn" class="btn btn--outline">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+              Open Login
+            </button>
+            <button type="button" id="session-done-btn" class="btn btn--success" style="display:none;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+              Done - Close Browser
+            </button>
+          </div>
+          <div id="session-status-row" class="status-row">
+            <span id="session-status"></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Step 2: Run New Audit -->
+      <section class="card" id="run-panel">
+        <div class="card-header">
+          <div class="step-indicator step-indicator--primary">
+            <span class="step-number">2</span>
+          </div>
+          <div class="card-header-text">
+            <h2>Run New Audit</h2>
+            <p class="card-desc">Configure and capture booking flow screenshots</p>
+          </div>
+        </div>
+        <div class="card-body">
+          <form id="audit-form">
+            <!-- Row 1: Platform + Flow toggles -->
+            <div class="form-section">
+              <div class="toggle-row">
+                <div class="icon-group">
+                  <span class="label-text">Platform</span>
+                  <div class="icon-toggle" id="platform-toggle">
+                    <button type="button" class="icon-btn active" data-value="ol" title="OL (Desktop)">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                      <span>OL</span>
+                    </button>
+                    <button type="button" class="icon-btn disabled" data-value="h5" title="H5 (Mobile Web) - coming soon" disabled>
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12" y2="18" stroke-linecap="round"/></svg>
+                      <span>H5</span>
+                    </button>
+                  </div>
+                </div>
+                <div class="toggle-divider"></div>
+                <div class="icon-group">
+                  <span class="label-text">Flow</span>
+                  <div class="icon-toggle" id="flow-toggle">
+                    <button type="button" class="icon-btn" data-value="flight" title="Flight Booking">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 00-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/></svg>
+                      <span>Flight</span>
+                    </button>
+                    <button type="button" class="icon-btn active" data-value="hotel" title="Hotel Booking">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21V7l9-4 9 4v14"/><path d="M9 21v-6h6v6"/><rect x="7" y="9" width="3" height="3"/><rect x="14" y="9" width="3" height="3"/></svg>
+                      <span>Hotel</span>
+                    </button>
+                    <button type="button" class="icon-btn disabled" data-value="bundle" title="Bundle - coming soon" disabled>
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a4 4 0 00-8 0v2"/><line x1="12" y1="11" x2="12" y2="15"/></svg>
+                      <span>Bundle</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <input type="hidden" id="platform" value="ol">
+            <input type="hidden" id="flow-type" value="hotel">
+
+            <!-- Row 2: Locale settings -->
+            <div class="form-section form-section--locale">
+              <div class="section-label">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+                <span>Locale</span>
+              </div>
+              <div class="locale-warning">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                <span>You must set these before running the audit. The language and currency here determine which locale the site loads in.</span>
+              </div>
+              <div class="form-row">
+                <label>
+                  <span class="label-text">Language</span>
+                  <select id="audit-language">
+                    <option value="ko-kr">한국어 (ko-kr)</option>
+                    <option value="en-us">English (en-us)</option>
+                    <option value="fr-fr">Français (fr-fr)</option>
+                    <option value="de-de">Deutsch (de-de)</option>
+                    <option value="es-es">Español (es-es)</option>
+                    <option value="ja">日本語 (ja)</option>
+                    <option value="zh-cn">中文简体 (zh-cn)</option>
+                    <option value="zh-tw">中文繁體 (zh-tw)</option>
+                    <option value="zh-hk">中文繁體-香港 (zh-hk)</option>
+                    <option value="th">ไทย (th)</option>
+                    <option value="vi">Tiếng Việt (vi)</option>
+                    <option value="ms">Bahasa Melayu (ms)</option>
+                    <option value="id">Bahasa Indonesia (id)</option>
+                    <option value="ru">Русский (ru)</option>
+                  </select>
+                </label>
+                <label>
+                  <span class="label-text">Currency</span>
+                  <select id="audit-currency">
+                    <option value="KRW">KRW (₩)</option>
+                    <option value="USD">USD ($)</option>
+                    <option value="EUR">EUR (€)</option>
+                    <option value="GBP">GBP (£)</option>
+                    <option value="JPY">JPY (¥)</option>
+                    <option value="CNY">CNY (¥)</option>
+                    <option value="TWD">TWD (NT$)</option>
+                    <option value="THB">THB (฿)</option>
+                    <option value="VND">VND (₫)</option>
+                    <option value="MYR">MYR (RM)</option>
+                    <option value="IDR">IDR (Rp)</option>
+                    <option value="SGD">SGD (S$)</option>
+                    <option value="AUD">AUD (A$)</option>
+                    <option value="HKD">HKD (HK$)</option>
+                    <option value="RUB">RUB (₽)</option>
+                  </select>
+                </label>
+              </div>
+            </div>
+
+            <!-- Row 3: Search parameters -->
+            <div class="form-section">
+              <div class="section-label">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <span>Search parameters</span>
+              </div>
+              <div class="form-row" id="hotel-fields">
+                <label>
+                  <span class="label-text">Destination</span>
+                  <input type="text" id="destination" value="" placeholder="e.g. Seoul, Tokyo, Bangkok">
+                </label>
+                <label>
+                  <span class="label-text">Check-in</span>
+                  <input type="date" id="check-in">
+                </label>
+                <label>
+                  <span class="label-text">Check-out</span>
+                  <input type="date" id="check-out">
+                </label>
+              </div>
+              <div class="form-row hidden" id="flight-fields">
+                <label>
+                  <span class="label-text">Departure airport</span>
+                  <input type="text" id="origin" value="" placeholder="e.g. ICN, NRT, BKK">
+                </label>
+                <label>
+                  <span class="label-text">Arrival airport</span>
+                  <input type="text" id="flight-destination" value="" placeholder="e.g. NRT, BKK, SIN">
+                </label>
+                <label>
+                  <span class="label-text">Departure date</span>
+                  <input type="date" id="departure-date">
+                </label>
+                <label>
+                  <span class="label-text">Cabin class</span>
+                  <select id="cabin-class">
+                    <option value="economy">Economy</option>
+                    <option value="premium">Premium Economy</option>
+                    <option value="business">Business</option>
+                    <option value="first">First</option>
+                  </select>
+                </label>
+              </div>
+            </div>
+
+            <!-- Submit -->
+            <div class="form-submit">
+              <button type="submit" id="run-btn" class="btn btn--primary btn--lg">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                Run Audit
+              </button>
+              <span class="form-submit-hint">Takes 1-2 minutes. Chrome will open automatically.</span>
+            </div>
+          </form>
+          <div id="run-status" class="status hidden"></div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Results -->
+    <section class="card card--results" id="results-panel">
+      <div class="card-header">
+        <div class="card-header-text">
+          <h2>Audit Results</h2>
+        </div>
+      </div>
+      <div class="card-body">
+        <div id="results-container">
+          <div class="empty-state">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity="0.3"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            <p>No audits yet. Run one above to get started.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Floating panels + FABs -->
+  <div class="fab-container">
+    <button type="button" class="fab fab--guide" id="fab-guide" title="How to use">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      <span>How to use</span>
+    </button>
+    <button type="button" class="fab fab--feedback" id="fab-feedback" title="Feedback">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+      <span>Feedback</span>
+    </button>
+  </div>
+
+  <!-- Guide floating panel -->
+  <div class="float-panel float-panel--guide" id="float-guide">
+    <div class="float-panel-header">
+      <h3>How to use</h3>
+      <button type="button" class="float-panel-close" id="float-guide-close">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="float-panel-body">
+      <ol class="guide-steps">
+        <li><strong>Log in (one-time).</strong> Open Session Setup, pick your OTA (e.g. Agoda), and click "Open Login." Log in manually, then click "Done." Your session cookies are saved so future audits stay logged in.</li>
+        <li class="guide-highlight"><strong>Set language + currency.</strong> Pick a language and the currency auto-updates to match. The tool sets a locale cookie and rewrites URLs so the OTA loads in the correct language and currency. <span class="guide-example">(e.g. ko-kr + KRW for Korean market)</span></li>
+        <li><strong>Pick your flow.</strong> Choose Flight or Hotel, then fill in search details: airports and departure date for flights, or destination and check-in/check-out for hotels.</li>
+        <li><strong>Run the audit.</strong> Chrome opens automatically, sets the locale, and walks through the full booking flow (search, results, detail, checkout). Takes 1-2 minutes. Do not close the browser window.</li>
+        <li><strong>Review results.</strong> Screenshots appear below. Click to zoom and pan, or download all steps as a zip file.</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- Feedback floating panel -->
+  <div class="float-panel float-panel--feedback" id="float-feedback">
+    <div class="float-panel-header">
+      <h3>Feedback</h3>
+      <button type="button" class="float-panel-close" id="float-feedback-close">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="float-panel-body">
+      <form id="feedback-form" class="feedback-form">
+        <div class="feedback-form-top">
+          <input type="text" id="fb-name" placeholder="Your name (optional)" class="fb-input fb-input--name">
+          <select id="fb-type" class="fb-input fb-input--type">
+            <option value="bug">Bug</option>
+            <option value="locale">Locale issue</option>
+            <option value="suggestion">Suggestion</option>
+            <option value="question">Question</option>
+          </select>
+        </div>
+        <textarea id="fb-message" placeholder="Describe the issue or suggestion..." rows="3" class="fb-input fb-input--message" required></textarea>
+        <div class="feedback-form-bottom">
+          <label class="fb-context-toggle">
+            <input type="checkbox" id="fb-attach-context" checked>
+            <span>Attach current audit settings</span>
+          </label>
+          <button type="submit" class="btn btn--primary btn--sm">Submit</button>
+        </div>
+      </form>
+      <div id="feedback-success" class="feedback-success" style="display:none;">Thanks! Your feedback has been submitted.</div>
+    </div>
+  </div>
+
+
+  <script src="app.js"></script>
+</body>
+</html>

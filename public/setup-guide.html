@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Setup Guide - UX Audit Screenshot Tool</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Mono&family=Fraunces:opsz,wght@9..144,400;9..144,500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --font-body: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-display: 'Fraunces', Georgia, serif;
+      --font-mono: 'DM Mono', monospace;
+      --bg: #f4f2ef;
+      --bg-card: #ffffff;
+      --border: #e4e0db;
+      --border-light: #ebe8e4;
+      --text: #1a1816;
+      --text-secondary: #7a7267;
+      --text-muted: #a39e96;
+      --accent: #3366e6;
+      --accent-hover: #2952c4;
+      --accent-light: #e8eeff;
+      --green: #1a8754;
+      --green-light: #e8f5ee;
+      --amber: #c47f17;
+      --amber-light: #fef7e6;
+      --red: #d63031;
+      --red-light: #fde8e8;
+      --radius: 10px;
+      --radius-lg: 16px;
+      --radius-xl: 20px;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Header */
+    .header {
+      background: var(--bg-card);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+    .header h1 {
+      font-family: var(--font-display);
+      font-size: 17px;
+      font-weight: 500;
+    }
+    .header a {
+      color: var(--accent);
+      font-size: 13px;
+      text-decoration: none;
+    }
+    .header a:hover { text-decoration: underline; }
+
+    /* Container */
+    .container {
+      flex: 1;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 32px 20px;
+      overflow-y: auto;
+    }
+
+    /* Card */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-xl);
+      width: 100%;
+      max-width: 520px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+      overflow: hidden;
+      animation: cardIn 0.35s ease;
+    }
+    @keyframes cardIn {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .card-top {
+      padding: 28px 32px 0;
+    }
+
+    /* Progress */
+    .progress {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .progress-bar {
+      flex: 1;
+      height: 4px;
+      background: #ebe8e4;
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: var(--accent);
+      border-radius: 2px;
+      transition: width 0.4s ease;
+    }
+    .progress-text {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+
+    /* Phase label */
+    .phase-label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+
+    /* Step title */
+    .step-title {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 500;
+      margin-bottom: 20px;
+      line-height: 1.3;
+    }
+
+    /* Content */
+    .card-body {
+      padding: 0 32px;
+    }
+    .card-body p {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      margin-bottom: 12px;
+    }
+    .card-body ol {
+      padding-left: 20px;
+      margin-bottom: 14px;
+    }
+    .card-body li {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      margin-bottom: 6px;
+    }
+    .card-body strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    code {
+      font-family: var(--font-mono);
+      font-size: 12.5px;
+      background: #f0eeeb;
+      padding: 2px 8px;
+      border-radius: 5px;
+      color: #b44600;
+      white-space: nowrap;
+    }
+
+    .cmd-block {
+      background: #1e1e1e;
+      color: #e0e0e0;
+      font-family: var(--font-mono);
+      font-size: 14px;
+      padding: 14px 18px;
+      border-radius: var(--radius);
+      margin: 12px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .cmd-text {
+      user-select: all;
+    }
+    .copy-btn {
+      background: #333;
+      color: #aaa;
+      border: 1px solid #555;
+      border-radius: 6px;
+      padding: 5px 12px;
+      font-size: 12px;
+      font-family: var(--font-body);
+      cursor: pointer;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .copy-btn:hover { color: #fff; border-color: #888; }
+
+    .callout {
+      padding: 12px 16px;
+      border-radius: 0 var(--radius) var(--radius) 0;
+      margin: 14px 0;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+    .callout--tip {
+      background: var(--amber-light);
+      border-left: 3px solid var(--amber);
+      color: #7a5a00;
+    }
+    .callout--success {
+      background: var(--green-light);
+      border-left: 3px solid var(--green);
+      color: #0d5c36;
+    }
+    .callout--warn {
+      background: var(--red-light);
+      border-left: 3px solid var(--red);
+      color: #a02020;
+    }
+    .callout--info {
+      background: var(--accent-light);
+      border-left: 3px solid var(--accent);
+      color: #1a3a8a;
+    }
+
+    .download-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      background: var(--accent);
+      color: #fff;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      margin: 8px 0;
+      transition: background 0.15s;
+    }
+    .download-btn:hover { background: var(--accent-hover); }
+
+    /* Footer with buttons */
+    .card-footer {
+      padding: 20px 32px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .btn-done {
+      padding: 12px 28px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius);
+      font-size: 14px;
+      font-weight: 600;
+      font-family: var(--font-body);
+      cursor: pointer;
+      transition: background 0.15s, transform 0.1s;
+      margin-left: auto;
+    }
+    .btn-done:hover { background: var(--accent-hover); }
+    .btn-done:active { transform: scale(0.97); }
+
+    .btn-back {
+      padding: 12px 20px;
+      background: transparent;
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 13px;
+      font-weight: 500;
+      font-family: var(--font-body);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .btn-back:hover { color: var(--text-secondary); border-color: var(--text-muted); }
+
+    .btn-skip {
+      padding: 12px 16px;
+      background: transparent;
+      color: var(--text-muted);
+      border: none;
+      font-size: 13px;
+      font-family: var(--font-body);
+      cursor: pointer;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+    .btn-skip:hover { color: var(--text-secondary); }
+
+    /* OS picker (special first card) */
+    .os-option {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 18px 20px;
+      border: 2px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      margin-bottom: 12px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .os-option:hover { border-color: var(--accent); background: var(--accent-light); }
+    .os-option.selected { border-color: var(--accent); background: var(--accent-light); }
+    .os-icon {
+      font-size: 32px;
+      flex-shrink: 0;
+    }
+    .os-label {
+      font-weight: 600;
+      font-size: 16px;
+    }
+    .os-desc {
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-top: 2px;
+    }
+
+    /* Final card */
+    .final-icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: var(--green-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      margin: 0 auto 16px;
+    }
+    .final-title {
+      text-align: center;
+      font-family: var(--font-display);
+      font-size: 24px;
+      font-weight: 500;
+      margin-bottom: 12px;
+    }
+    .final-text {
+      text-align: center;
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      margin-bottom: 10px;
+    }
+    .final-url {
+      display: block;
+      text-align: center;
+      font-family: var(--font-mono);
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--accent);
+      margin: 16px 0;
+    }
+    .btn-open {
+      display: block;
+      width: 100%;
+      padding: 14px;
+      background: var(--green);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius);
+      font-size: 15px;
+      font-weight: 600;
+      font-family: var(--font-body);
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+    .btn-open:hover { background: #15713f; }
+
+    /* FAQ / Troubleshooting */
+    .faq-section {
+      margin-top: 24px;
+    }
+    .faq-title {
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+    .faq-item {
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius);
+      margin-bottom: 8px;
+      overflow: hidden;
+    }
+    .faq-q {
+      padding: 12px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      background: var(--bg);
+      user-select: none;
+      transition: background 0.15s;
+    }
+    .faq-q:hover { background: #ece9e5; }
+    .faq-arrow {
+      font-size: 12px;
+      color: var(--text-muted);
+      transition: transform 0.2s;
+      flex-shrink: 0;
+    }
+    .faq-item.open .faq-arrow { transform: rotate(180deg); }
+    .faq-a {
+      display: none;
+      padding: 0 16px 14px;
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.65;
+      background: var(--bg-card);
+      border-top: 1px solid var(--border-light);
+    }
+    .faq-item.open .faq-a { display: block; padding-top: 12px; }
+
+    /* Hidden */
+    .step-card { display: none; }
+    .step-card.active { display: block; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>UX Audit Screenshot Tool</h1>
+    <span style="font-size: 13px; color: var(--text-muted);">Setup Guide</span>
+  </div>
+
+  <div class="container">
+    <div class="card">
+      <div id="card-content"></div>
+    </div>
+  </div>
+
+  <script>
+    let os = null;
+    let currentStep = 0;
+
+    const macSteps = [
+      {
+        phase: 'Part 1: Install Node.js',
+        title: 'First, let\'s check if Node.js is on your Mac',
+        body: `
+          <ol>
+            <li>Press <strong>Command + Space</strong> on your keyboard. A search bar will appear.</li>
+            <li>Type <strong>Terminal</strong> and press <strong>Enter</strong>. A window with a blinking cursor will open.</li>
+            <li>Copy and paste this command, then press <strong>Enter</strong>:</li>
+          </ol>
+          <div class="cmd-block">
+            <span class="cmd-text">node -v</span>
+            <button class="copy-btn" onclick="copyText(this, 'node -v')">Copy</button>
+          </div>
+          <div class="callout callout--success">See something like <code>v20.18.0</code>? Great, Node.js is installed. Click <strong>"Already installed, skip"</strong> below.</div>
+          <div class="callout callout--warn">See <code>command not found</code>? No worries. Click <strong>"I'm done"</strong> to install it in the next step.</div>
+        `,
+        doneLabel: "I'm done",
+        skipLabel: "Already installed, skip",
+        skipTo: 2,
+      },
+      {
+        phase: 'Part 1: Install Node.js',
+        title: 'Install Node.js',
+        body: `
+          <ol>
+            <li>Click the button below. It will open the Node.js website.</li>
+            <li>Click the big green <strong>"Download Node.js (LTS)"</strong> button on that page.</li>
+            <li>A <code>.pkg</code> file will download. Open it.</li>
+            <li>Click <strong>Continue</strong> through all the screens until it says <strong>"The installation was successful."</strong></li>
+            <li><strong>Close Terminal</strong> (the window from the last step) and open it again: press <strong>Command + Space</strong>, type <strong>Terminal</strong>, press Enter.</li>
+            <li>Type <code>node -v</code> and press Enter. You should now see a version number.</li>
+          </ol>
+          <a class="download-btn" href="https://nodejs.org/" target="_blank" rel="noopener">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Open nodejs.org
+          </a>
+        `,
+        doneLabel: "Installed! Next",
+      },
+      {
+        phase: 'Part 2: Download the tool',
+        title: 'Download the project files',
+        body: `
+          <p>Download the zip file that was shared with you and <strong>unzip it</strong> (double-click the zip file).</p>
+          <p>You should see a folder called <strong>ux-audit-tool</strong>.</p>
+          <div class="callout callout--tip">Save it somewhere easy to find, like your <strong>Desktop</strong> or <strong>Downloads</strong> folder.</div>
+        `,
+        doneLabel: "Downloaded and unzipped!",
+      },
+      {
+        phase: 'Part 2: Download the tool',
+        title: 'Open Terminal in the project folder',
+        body: `
+          <p>Now we need to tell Terminal where the project is. Here's the easiest way:</p>
+          <ol>
+            <li>Open <strong>Terminal</strong> if it's not already open (Command + Space, type Terminal, Enter).</li>
+            <li>Type the letters <code>cd</code> followed by one space. <strong>Don't press Enter yet!</strong></li>
+            <li>Open <strong>Finder</strong> and find the <strong>ux-audit-tool</strong> folder.</li>
+            <li><strong>Drag the folder</strong> from Finder into the Terminal window. A path like <code>/Users/you/Desktop/ux-audit-tool</code> will appear automatically.</li>
+            <li>Now press <strong>Enter</strong>.</li>
+          </ol>
+          <div class="callout callout--info">Nothing visible will happen. That's normal! It just means Terminal is now looking at the right folder.</div>
+        `,
+        doneLabel: "Done!",
+      },
+      {
+        phase: 'Part 3: Set up and start',
+        title: 'Run the setup',
+        body: `
+          <p>In the same Terminal window, copy and paste this command, then press <strong>Enter</strong>:</p>
+          <div class="cmd-block">
+            <span class="cmd-text">bash setup.sh</span>
+            <button class="copy-btn" onclick="copyText(this, 'bash setup.sh')">Copy</button>
+          </div>
+          <p>You'll see some text scrolling. This is normal. <strong>Wait until you see "Setup complete!"</strong></p>
+          <p>This usually takes 2-3 minutes.</p>
+          <div class="callout callout--tip">If you see "permission denied", paste this first and press Enter:<br><code>chmod +x setup.sh</code><br>Then try <code>bash setup.sh</code> again.</div>
+        `,
+        doneLabel: 'I see "Setup complete!"',
+      },
+      {
+        phase: 'Part 3: Set up and start',
+        title: 'Start the tool!',
+        body: `
+          <p>Almost there! In the same Terminal window, paste this command:</p>
+          <div class="cmd-block">
+            <span class="cmd-text">bash start.sh</span>
+            <button class="copy-btn" onclick="copyText(this, 'bash start.sh')">Copy</button>
+          </div>
+          <p>You should see: <code>UX Audit Tool running at http://localhost:3200</code></p>
+          <div class="callout callout--info"><strong>Keep Terminal open!</strong> Closing it will stop the tool. You can minimize it.</div>
+        `,
+        doneLabel: "It's running!",
+      },
+    ];
+
+    const winSteps = [
+      {
+        phase: 'Part 1: Install Node.js',
+        title: 'First, let\'s check if Node.js is on your PC',
+        body: `
+          <ol>
+            <li>Press the <strong>Windows key</strong> on your keyboard (the key with the Windows logo).</li>
+            <li>Type <strong>PowerShell</strong> and click on <strong>Windows PowerShell</strong>.</li>
+            <li>A blue window will open. Copy and paste this command, then press <strong>Enter</strong>:</li>
+          </ol>
+          <div class="cmd-block">
+            <span class="cmd-text">node -v</span>
+            <button class="copy-btn" onclick="copyText(this, 'node -v')">Copy</button>
+          </div>
+          <div class="callout callout--success">See something like <code>v20.18.0</code>? Great, Node.js is installed. Click <strong>"Already installed, skip"</strong> below.</div>
+          <div class="callout callout--warn">See a red error? No worries. Click <strong>"I'm done"</strong> to install it in the next step.</div>
+        `,
+        doneLabel: "I'm done",
+        skipLabel: "Already installed, skip",
+        skipTo: 2,
+      },
+      {
+        phase: 'Part 1: Install Node.js',
+        title: 'Install Node.js',
+        body: `
+          <ol>
+            <li>Click the button below. It will open the Node.js website.</li>
+            <li>Click the big green <strong>"Download Node.js (LTS)"</strong> button.</li>
+            <li>A <code>.msi</code> file will download. Open it.</li>
+            <li>Click <strong>Next</strong> on every screen. <strong>Don't change any settings.</strong> Just click Next, Next, Install, Finish.</li>
+            <li><strong>Close PowerShell</strong> and open it again (Windows key, type PowerShell, click it).</li>
+            <li>Type <code>node -v</code> and press Enter. You should now see a version number.</li>
+          </ol>
+          <a class="download-btn" href="https://nodejs.org/" target="_blank" rel="noopener">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Open nodejs.org
+          </a>
+        `,
+        doneLabel: "Installed! Next",
+      },
+      {
+        phase: 'Part 2: Download the tool',
+        title: 'Download the project files',
+        body: `
+          <p>Download the zip file that was shared with you.</p>
+          <ol>
+            <li>Find the zip file in your <strong>Downloads</strong> folder.</li>
+            <li>Right-click the zip file and select <strong>"Extract All..."</strong></li>
+            <li>Choose where to save it (Desktop is fine) and click <strong>Extract</strong>.</li>
+          </ol>
+          <p>You should see a folder called <strong>ux-audit-tool</strong>.</p>
+        `,
+        doneLabel: "Downloaded and extracted!",
+      },
+      {
+        phase: 'Part 3: Set up and start',
+        title: 'Run the setup',
+        body: `
+          <ol>
+            <li>Open the <strong>ux-audit-tool</strong> folder.</li>
+            <li>Find the file called <strong>setup.bat</strong></li>
+            <li><strong>Double-click</strong> it.</li>
+            <li>A black window will open and start installing things. <strong>Wait until you see "Setup complete!"</strong></li>
+            <li>Press any key to close the window.</li>
+          </ol>
+          <p>This usually takes 2-3 minutes.</p>
+          <div class="callout callout--tip">If Windows shows a popup saying <strong>"Windows protected your PC"</strong>, click <strong>"More info"</strong>, then click <strong>"Run anyway"</strong>. This is normal.</div>
+        `,
+        doneLabel: 'I see "Setup complete!"',
+      },
+      {
+        phase: 'Part 3: Set up and start',
+        title: 'Start the tool!',
+        body: `
+          <ol>
+            <li>Open the <strong>ux-audit-tool</strong> folder again.</li>
+            <li>Find the file called <strong>start.bat</strong></li>
+            <li><strong>Double-click</strong> it.</li>
+          </ol>
+          <p>A black window will appear. You should see: <code>UX Audit Tool running at http://localhost:3200</code></p>
+          <div class="callout callout--info"><strong>Keep this window open!</strong> Closing it will stop the tool. You can minimize it.</div>
+        `,
+        doneLabel: "It's running!",
+      },
+    ];
+
+    const faqItems = [
+      {
+        q: '"command not found: node" or a red error when I type node -v',
+        a: 'Node.js is not installed yet, or your terminal needs to be restarted. Close the terminal window, open a new one, and try <code>node -v</code> again. If it still doesn\'t work, go back and re-install Node.js from nodejs.org.'
+      },
+      {
+        q: 'A Chrome window opened but nothing is happening',
+        a: 'The audit is probably still running. It takes 1-2 minutes. <strong>Do not close the Chrome window.</strong> Just wait. When it\'s done, the screenshots will appear on the dashboard.'
+      },
+      {
+        q: '"address already in use" error when starting',
+        a: 'The tool is already running somewhere. <strong>Mac:</strong> Press Ctrl+C in Terminal first. <strong>Windows:</strong> Close the old black command window. Then try starting again.'
+      },
+      {
+        q: 'Screenshots look wrong or the page is in the wrong language',
+        a: 'Try logging in first. On the dashboard, open <strong>Session Setup</strong>, select your OTA, and click <strong>"Open Browser"</strong>. Log in with your account, close the browser, then run the audit again.'
+      },
+      {
+        q: 'Windows SmartScreen is blocking the file',
+        a: 'This is normal for downloaded scripts. Click <strong>"More info"</strong>, then click <strong>"Run anyway"</strong>. The files are safe.'
+      },
+      {
+        q: 'How do I update to a newer version?',
+        a: 'Download the latest zip file and replace the folder. If you want to keep your login sessions, copy the <strong>profiles</strong> folder from the old version to the new one.'
+      },
+      {
+        q: 'Something else is wrong',
+        a: 'Use the <strong>Feedback</strong> button on the dashboard to describe what happened. Include what you see on your screen. We\'ll help you out!'
+      },
+    ];
+
+    function renderFaq() {
+      return `
+        <div class="faq-section">
+          <div class="faq-title">Troubleshooting</div>
+          ${faqItems.map((item, i) => `
+            <div class="faq-item">
+              <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+                <span>${item.q}</span>
+                <span class="faq-arrow">&#9660;</span>
+              </div>
+              <div class="faq-a">${item.a}</div>
+            </div>
+          `).join('')}
+        </div>
+      `;
+    }
+
+    const finalCard = `
+      <div class="card-top" style="padding-top: 36px;">
+        <div class="final-icon">&#10003;</div>
+        <div class="final-title">You're all set!</div>
+      </div>
+      <div class="card-body">
+        <p class="final-text">Open your browser and go to:</p>
+        <span class="final-url">http://localhost:3200</span>
+        <p class="final-text" style="margin-top: 16px;">You should see the UX Audit Screenshot Tool dashboard.</p>
+        <div class="callout callout--tip" style="margin-bottom: 4px;">
+          <strong>Important:</strong> The tool stops when you close the terminal or restart your computer. To start it again, follow the steps below.
+        </div>
+        <div class="faq-section" style="margin-top: 16px; margin-bottom: 8px;">
+          <div class="faq-title">How to restart the tool</div>
+          <div class="faq-item">
+            <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+              <span>Mac: How to start the tool again</span>
+              <span class="faq-arrow">&#9660;</span>
+            </div>
+            <div class="faq-a">
+              <ol style="padding-left: 18px; margin-top: 4px;">
+                <li style="margin-bottom: 4px;">Open <strong>Terminal</strong> (Command + Space, type Terminal, Enter).</li>
+                <li style="margin-bottom: 4px;">Type <code>cd</code> + space, then <strong>drag the ux-audit-tool folder</strong> from Finder into Terminal. Press Enter.</li>
+                <li style="margin-bottom: 4px;">Type <code>bash start.sh</code> and press Enter.</li>
+                <li>Open <strong>http://localhost:3200</strong> in your browser.</li>
+              </ol>
+            </div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+              <span>Windows: How to start the tool again</span>
+              <span class="faq-arrow">&#9660;</span>
+            </div>
+            <div class="faq-a">
+              <ol style="padding-left: 18px; margin-top: 4px;">
+                <li style="margin-bottom: 4px;">Open the <strong>ux-audit-tool</strong> folder.</li>
+                <li style="margin-bottom: 4px;">Double-click <strong>start.bat</strong>.</li>
+                <li>Open <strong>http://localhost:3200</strong> in your browser.</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+        ${renderFaq()}
+      </div>
+      <div class="card-footer">
+        <a class="btn-open" href="http://localhost:3200">Open the dashboard</a>
+      </div>
+    `;
+
+    function getSteps() {
+      return os === 'mac' ? macSteps : winSteps;
+    }
+
+    function render() {
+      const el = document.getElementById('card-content');
+
+      // OS picker
+      if (os === null) {
+        el.innerHTML = `
+          <div class="card-top">
+            <div class="step-title">Welcome! Let's get you set up.</div>
+          </div>
+          <div class="card-body">
+            <p>This tool captures screenshots of OTA booking flows automatically. It runs on your own computer. The setup takes about 5 minutes.</p>
+            <p style="font-weight: 600; color: var(--text); margin-top: 16px; margin-bottom: 12px;">What computer are you using?</p>
+            <div class="os-option" onclick="pickOS('mac')">
+              <div class="os-icon">&#128187;</div>
+              <div>
+                <div class="os-label">Mac</div>
+                <div class="os-desc">MacBook, iMac, Mac Mini, etc.</div>
+              </div>
+            </div>
+            <div class="os-option" onclick="pickOS('win')">
+              <div class="os-icon">&#128421;</div>
+              <div>
+                <div class="os-label">Windows</div>
+                <div class="os-desc">Any Windows PC or laptop</div>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer" style="flex-direction: column; gap: 0;">
+            <a href="http://localhost:3200" style="font-size: 13px; color: var(--text-muted); text-decoration: none; padding: 8px 0;">Already set up? Open the dashboard &rarr;</a>
+          </div>
+        `;
+        return;
+      }
+
+      const steps = getSteps();
+
+      // Final card
+      if (currentStep >= steps.length) {
+        el.innerHTML = finalCard;
+        return;
+      }
+
+      const step = steps[currentStep];
+      const total = steps.length;
+      const pct = Math.round(((currentStep) / total) * 100);
+
+      let footerHtml = '';
+      if (currentStep > 0) {
+        footerHtml += `<button class="btn-back" onclick="goBack()">Back</button>`;
+      } else {
+        footerHtml += `<button class="btn-back" onclick="resetOS()">Change</button>`;
+      }
+      if (step.skipLabel) {
+        footerHtml += `<button class="btn-skip" onclick="skipTo(${step.skipTo})">${step.skipLabel}</button>`;
+      }
+      footerHtml += `<button class="btn-done" onclick="goNext()">${step.doneLabel || "I'm done"}</button>`;
+
+      el.innerHTML = `
+        <div class="card-top">
+          <div class="progress">
+            <div class="progress-bar"><div class="progress-fill" style="width: ${pct}%"></div></div>
+            <div class="progress-text">${currentStep + 1} / ${total}</div>
+          </div>
+          <div class="phase-label">${step.phase}</div>
+          <div class="step-title">${step.title}</div>
+        </div>
+        <div class="card-body">${step.body}</div>
+        <div class="card-footer">${footerHtml}</div>
+      `;
+
+      // Re-trigger animation
+      const card = document.querySelector('.card');
+      card.style.animation = 'none';
+      card.offsetHeight;
+      card.style.animation = '';
+    }
+
+    function pickOS(selected) {
+      os = selected;
+      currentStep = 0;
+      render();
+    }
+
+    function resetOS() {
+      os = null;
+      currentStep = 0;
+      render();
+    }
+
+    function goNext() {
+      currentStep++;
+      render();
+    }
+
+    function goBack() {
+      if (currentStep > 0) currentStep--;
+      render();
+    }
+
+    function skipTo(idx) {
+      currentStep = idx;
+      render();
+    }
+
+    function copyText(btn, text) {
+      navigator.clipboard.writeText(text);
+      btn.textContent = 'Copied!';
+      setTimeout(() => { btn.textContent = 'Copy'; }, 1500);
+    }
+
+    render();
+  </script>
+</body>
+</html>
