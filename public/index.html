@@ -38,14 +38,13 @@
       <!-- Step 1: Session Setup -->
       <section class="card card--collapsible" id="session-panel">
         <button type="button" class="card-header card-header--toggle" id="session-toggle">
-          <div class="step-indicator">
+          <div class="step-indicator step-indicator--primary">
             <span class="step-number">1</span>
           </div>
           <div class="card-header-text">
-            <h2>Session Setup</h2>
+            <h2>Session Setup <span class="session-badge" id="session-badge"></span></h2>
             <p class="card-desc">Log in to the OTA before running audits</p>
           </div>
-          <span class="session-badge" id="session-badge"></span>
           <svg class="chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
         </button>
         <div class="card-body" id="session-body">
@@ -69,7 +68,7 @@
             </label>
           </div>
           <div class="session-actions">
-            <button type="button" id="login-btn" class="btn btn--outline">
+            <button type="button" id="login-btn" class="btn btn--primary">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
               Open Login
             </button>

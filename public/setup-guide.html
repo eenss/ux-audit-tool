@@ -655,7 +655,7 @@
   </div>
 
   <!-- FABs -->
-  <div class="fab-container" id="fab-container" style="display:none;">
+  <div class="fab-container" id="fab-container">
     <button type="button" class="fab fab--help" id="fab-help">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
       <span>Need help?</span>
@@ -1068,15 +1068,9 @@
         <div class="card-footer">${footerHtml}</div>
       `;
 
-      // Show FABs on step cards, hide on OS picker and final
-      const fabContainer = document.getElementById('fab-container');
-      if (os !== null && currentStep < steps.length) {
-        fabContainer.style.display = '';
-        document.getElementById('help-panel-body').innerHTML = renderHelpFaq();
-      } else {
-        fabContainer.style.display = 'none';
-        closeAllPanels();
-      }
+      // Always show FABs
+      document.getElementById('fab-container').style.display = '';
+      document.getElementById('help-panel-body').innerHTML = renderHelpFaq();
 
       // Re-trigger animation
       const card = document.querySelector('.card');
