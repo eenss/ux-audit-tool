@@ -6,3 +6,12 @@ feedback.json
 auth/
 .DS_Store
 .claude/
+
+# Dev/internal files
+PRD.md
+kanban.md
+discover-currency-ids.js
+discover-lang-ids.js
+test-locales.js
+login.js
+set-locale.js
