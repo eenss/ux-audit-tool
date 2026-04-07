@@ -960,39 +960,8 @@
         <span class="final-url">http://localhost:3200</span>
         <p class="final-text" style="margin-top: 16px;">You should see the UX Audit Screenshot Tool.</p>
         <div class="callout callout--tip" style="margin-bottom: 4px;">
-          <strong>Important:</strong> The tool stops when you close the terminal or restart your computer. To start it again, follow the steps below.
+          <strong>Important:</strong> The tool stops when you close the terminal or restart your computer. Click <strong>"Need help?"</strong> below for restart instructions.
         </div>
-        <div class="faq-section" style="margin-top: 16px; margin-bottom: 8px;">
-          <div class="faq-title">How to restart the tool</div>
-          <div class="faq-item">
-            <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">
-              <span>Mac: How to start the tool again</span>
-              <span class="faq-arrow">&#9660;</span>
-            </div>
-            <div class="faq-a">
-              <ol style="padding-left: 18px; margin-top: 4px;">
-                <li style="margin-bottom: 4px;">Open <strong>Terminal</strong> (Command + Space, type Terminal, Enter).</li>
-                <li style="margin-bottom: 4px;">Type <code>cd</code> + space, then <strong>drag the ux-audit-tool-main folder</strong> from Finder into Terminal. Press Enter.</li>
-                <li style="margin-bottom: 4px;">Type <code>bash start.sh</code> and press Enter.</li>
-                <li>Open <strong>http://localhost:3200</strong> in your browser.</li>
-              </ol>
-            </div>
-          </div>
-          <div class="faq-item">
-            <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">
-              <span>Windows: How to start the tool again</span>
-              <span class="faq-arrow">&#9660;</span>
-            </div>
-            <div class="faq-a">
-              <ol style="padding-left: 18px; margin-top: 4px;">
-                <li style="margin-bottom: 4px;">Open the <strong>ux-audit-tool-main</strong> folder.</li>
-                <li style="margin-bottom: 4px;">Double-click <strong>start.bat</strong>.</li>
-                <li>Open <strong>http://localhost:3200</strong> in your browser.</li>
-              </ol>
-            </div>
-          </div>
-        </div>
-        ${renderFaq()}
       </div>
       <div class="card-footer">
         <a class="btn-open" href="http://localhost:3200">Open the screenshot tool</a>
@@ -1145,7 +1114,18 @@
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeAllPanels(); });
 
     function renderHelpFaq() {
-      return `<div class="help-faq-list">${faqItems.map(item => `
+      const restartItems = [
+        {
+          q: 'Mac: How to start the tool again',
+          a: '<ol style="padding-left:18px;margin:0;"><li>Open <strong>Terminal</strong> (Command + Space, type Terminal, Enter).</li><li>Type <code>cd</code> + space, then <strong>drag the ux-audit-tool-main folder</strong> from Finder into Terminal. Press Enter.</li><li>Type <code>bash start.sh</code> and press Enter.</li><li>Open <strong>http://localhost:3200</strong> in your browser.</li></ol>'
+        },
+        {
+          q: 'Windows: How to start the tool again',
+          a: '<ol style="padding-left:18px;margin:0;"><li>Open the <strong>ux-audit-tool-main</strong> folder.</li><li>Double-click <strong>start.bat</strong>.</li><li>Open <strong>http://localhost:3200</strong> in your browser.</li></ol>'
+        },
+      ];
+      const allItems = [...faqItems, ...restartItems];
+      return `<div class="help-faq-list">${allItems.map(item => `
         <details class="help-faq-item">
           <summary>${item.q}</summary>
           <p>${item.a}</p>
