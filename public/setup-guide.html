@@ -496,8 +496,16 @@
         phase: 'Part 2: Download the tool',
         title: 'Download the project files',
         body: `
-          <p>Download the zip file that was shared with you and <strong>unzip it</strong> (double-click the zip file).</p>
-          <p>You should see a folder called <strong>ux-audit-tool</strong>.</p>
+          <p>Click the button below to download the project as a zip file.</p>
+          <a class="download-btn" href="https://github.com/eenss/ux-audit-tool/archive/refs/heads/main.zip" target="_blank" rel="noopener">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Download ux-audit-tool.zip
+          </a>
+          <ol>
+            <li>After downloading, find the zip file in your <strong>Downloads</strong> folder.</li>
+            <li><strong>Double-click</strong> the zip file to unzip it.</li>
+            <li>You should see a folder called <strong>ux-audit-tool-main</strong>.</li>
+          </ol>
           <div class="callout callout--tip">Save it somewhere easy to find, like your <strong>Desktop</strong> or <strong>Downloads</strong> folder.</div>
         `,
         doneLabel: "Downloaded and unzipped!",
@@ -510,8 +518,8 @@
           <ol>
             <li>Open <strong>Terminal</strong> if it's not already open (Command + Space, type Terminal, Enter).</li>
             <li>Type the letters <code>cd</code> followed by one space. <strong>Don't press Enter yet!</strong></li>
-            <li>Open <strong>Finder</strong> and find the <strong>ux-audit-tool</strong> folder.</li>
-            <li><strong>Drag the folder</strong> from Finder into the Terminal window. A path like <code>/Users/you/Desktop/ux-audit-tool</code> will appear automatically.</li>
+            <li>Open <strong>Finder</strong> and find the <strong>ux-audit-tool-main</strong> folder.</li>
+            <li><strong>Drag the folder</strong> from Finder into the Terminal window. A path like <code>/Users/you/Desktop/ux-audit-tool-main</code> will appear automatically.</li>
             <li>Now press <strong>Enter</strong>.</li>
           </ol>
           <div class="callout callout--info">Nothing visible will happen. That's normal! It just means Terminal is now looking at the right folder.</div>
@@ -593,13 +601,17 @@
         phase: 'Part 2: Download the tool',
         title: 'Download the project files',
         body: `
-          <p>Download the zip file that was shared with you.</p>
+          <p>Click the button below to download the project as a zip file.</p>
+          <a class="download-btn" href="https://github.com/eenss/ux-audit-tool/archive/refs/heads/main.zip" target="_blank" rel="noopener">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Download ux-audit-tool.zip
+          </a>
           <ol>
             <li>Find the zip file in your <strong>Downloads</strong> folder.</li>
             <li>Right-click the zip file and select <strong>"Extract All..."</strong></li>
             <li>Choose where to save it (Desktop is fine) and click <strong>Extract</strong>.</li>
           </ol>
-          <p>You should see a folder called <strong>ux-audit-tool</strong>.</p>
+          <p>You should see a folder called <strong>ux-audit-tool-main</strong>.</p>
         `,
         doneLabel: "Downloaded and extracted!",
       },
@@ -608,7 +620,7 @@
         title: 'Run the setup',
         body: `
           <ol>
-            <li>Open the <strong>ux-audit-tool</strong> folder.</li>
+            <li>Open the <strong>ux-audit-tool-main</strong> folder.</li>
             <li>Find the file called <strong>setup.bat</strong></li>
             <li><strong>Double-click</strong> it.</li>
             <li>A black window will open and start installing things. <strong>Wait until you see "Setup complete!"</strong></li>
@@ -624,7 +636,7 @@
         title: 'Start the tool!',
         body: `
           <ol>
-            <li>Open the <strong>ux-audit-tool</strong> folder again.</li>
+            <li>Open the <strong>ux-audit-tool-main</strong> folder again.</li>
             <li>Find the file called <strong>start.bat</strong></li>
             <li><strong>Double-click</strong> it.</li>
           </ol>
@@ -705,7 +717,7 @@
             <div class="faq-a">
               <ol style="padding-left: 18px; margin-top: 4px;">
                 <li style="margin-bottom: 4px;">Open <strong>Terminal</strong> (Command + Space, type Terminal, Enter).</li>
-                <li style="margin-bottom: 4px;">Type <code>cd</code> + space, then <strong>drag the ux-audit-tool folder</strong> from Finder into Terminal. Press Enter.</li>
+                <li style="margin-bottom: 4px;">Type <code>cd</code> + space, then <strong>drag the ux-audit-tool-main folder</strong> from Finder into Terminal. Press Enter.</li>
                 <li style="margin-bottom: 4px;">Type <code>bash start.sh</code> and press Enter.</li>
                 <li>Open <strong>http://localhost:3200</strong> in your browser.</li>
               </ol>
@@ -718,7 +730,7 @@
             </div>
             <div class="faq-a">
               <ol style="padding-left: 18px; margin-top: 4px;">
-                <li style="margin-bottom: 4px;">Open the <strong>ux-audit-tool</strong> folder.</li>
+                <li style="margin-bottom: 4px;">Open the <strong>ux-audit-tool-main</strong> folder.</li>
                 <li style="margin-bottom: 4px;">Double-click <strong>start.bat</strong>.</li>
                 <li>Open <strong>http://localhost:3200</strong> in your browser.</li>
               </ol>
