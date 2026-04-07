@@ -465,6 +465,62 @@
     }
     .faq-item.open .faq-a { display: block; padding-top: 12px; }
 
+    /* Feedback form on setup guide */
+    .feedback-area { margin-top: -4px; }
+    .sg-feedback-form {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 4px 0;
+    }
+    .sg-fb-input {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 13px;
+      font-family: var(--font-body);
+      outline: none;
+      transition: border-color 0.15s;
+      resize: vertical;
+    }
+    .sg-fb-input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(51, 102, 230, 0.1);
+    }
+    .sg-fb-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .sg-fb-hint {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+    .sg-fb-submit {
+      padding: 8px 20px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      font-family: var(--font-body);
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .sg-fb-submit:hover { background: #2952c4; }
+    .sg-fb-success {
+      padding: 10px 14px;
+      background: #e8f5ee;
+      color: #1a8754;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      text-align: center;
+      margin-top: 4px;
+    }
+
     /* Hidden */
     .step-card { display: none; }
     .step-card.active { display: block; }
@@ -487,6 +543,23 @@
           <span class="faq-arrow">&#9660;</span>
         </div>
         <div id="help-faq" class="step-faq"></div>
+      </div>
+      <div class="feedback-area" id="feedback-area" style="display:none;">
+        <div class="help-toggle" onclick="document.getElementById('feedback-form-wrap').classList.toggle('open'); this.classList.toggle('active')">
+          <span>Send feedback</span>
+          <span class="faq-arrow">&#9660;</span>
+        </div>
+        <div id="feedback-form-wrap" class="step-faq">
+          <form class="sg-feedback-form" id="sg-feedback-form">
+            <input type="text" id="sg-fb-name" placeholder="Your name (optional)" class="sg-fb-input">
+            <textarea id="sg-fb-message" placeholder="Describe what happened..." rows="3" class="sg-fb-input" required></textarea>
+            <div class="sg-fb-footer">
+              <span class="sg-fb-hint">We'll look into it and get back to you.</span>
+              <button type="submit" class="sg-fb-submit">Send</button>
+            </div>
+          </form>
+          <div id="sg-fb-success" class="sg-fb-success" style="display:none;">Thanks! Your feedback has been sent.</div>
+        </div>
       </div>
     </div>
   </div>
@@ -709,7 +782,7 @@
       },
       {
         q: 'Something else is wrong',
-        a: 'Use the <strong>Feedback</strong> button on the dashboard to describe what happened. Include what you see on your screen. We\'ll help you out!'
+        a: 'Use the <strong>Send feedback</strong> form below to describe what happened. Include what you see on your screen. We\'ll help you out!'
       },
     ];
 
@@ -853,16 +926,19 @@
         <div class="card-footer">${footerHtml}</div>
       `;
 
-      // Show help area on step cards, hide on OS picker and final
+      // Show help + feedback areas on step cards, hide on OS picker and final
       const helpArea = document.getElementById('help-area');
+      const feedbackArea = document.getElementById('feedback-area');
       const helpFaq = document.getElementById('help-faq');
       if (os !== null && currentStep < steps.length) {
         helpArea.style.display = '';
+        feedbackArea.style.display = '';
         helpFaq.innerHTML = renderFaq();
         helpFaq.classList.remove('open');
-        document.querySelector('.help-toggle').classList.remove('active');
+        document.querySelector('#help-area .help-toggle').classList.remove('active');
       } else {
         helpArea.style.display = 'none';
+        feedbackArea.style.display = 'none';
       }
 
       // Re-trigger animation
@@ -906,6 +982,34 @@
     }
 
     render();
+
+    // Feedback form submission
+    document.getElementById('sg-feedback-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const name = document.getElementById('sg-fb-name').value;
+      const message = document.getElementById('sg-fb-message').value;
+      try {
+        await fetch('http://localhost:3200/api/feedback', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: name || 'Anonymous',
+            type: 'setup',
+            message: '[Setup Guide] ' + message,
+          }),
+        });
+        document.getElementById('sg-fb-message').value = '';
+        document.getElementById('sg-fb-name').value = '';
+        document.getElementById('sg-fb-success').style.display = '';
+        document.getElementById('sg-feedback-form').style.display = 'none';
+        setTimeout(() => {
+          document.getElementById('sg-fb-success').style.display = 'none';
+          document.getElementById('sg-feedback-form').style.display = '';
+        }, 4000);
+      } catch {
+        alert('Could not send feedback. Make sure the tool is running on localhost:3200.');
+      }
+    });
   </script>
 </body>
 </html>
