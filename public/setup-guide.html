@@ -382,6 +382,31 @@
     }
     .btn-open:hover { background: #15713f; }
 
+    /* Help toggle on every step */
+    .help-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      margin-top: 20px;
+      padding: 10px 0;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-muted);
+      cursor: pointer;
+      border-top: 1px solid var(--border-light);
+      transition: color 0.15s;
+    }
+    .help-toggle:hover { color: var(--text-secondary); }
+    .help-toggle .faq-arrow { transition: transform 0.2s; }
+    .step-faq {
+      display: none;
+    }
+    .step-faq.open {
+      display: block;
+    }
+    .step-faq.open + .card-footer { /* spacing fix */ }
+
     /* FAQ / Troubleshooting */
     .faq-section {
       margin-top: 24px;
@@ -815,7 +840,14 @@
           <div class="phase-label">${step.phase}</div>
           <div class="step-title">${step.title}</div>
         </div>
-        <div class="card-body">${step.body}</div>
+        <div class="card-body">
+          ${step.body}
+          <div class="help-toggle" onclick="document.getElementById('step-faq').classList.toggle('open')">
+            <span>Stuck? Need help?</span>
+            <span class="faq-arrow">&#9660;</span>
+          </div>
+          <div id="step-faq" class="step-faq">${renderFaq()}</div>
+        </div>
         <div class="card-footer">${footerHtml}</div>
       `;
 
